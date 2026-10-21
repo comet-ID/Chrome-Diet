@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Chrome Diet",
+  "version": "1.1.0",
+  "description": "Tidurkan tab yang lama tidak dipakai, pantau RAM realtime, dan hemat baterai.",
+  "permissions": ["tabs", "alarms", "storage", "system.memory", "tabGroups", "offscreen"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    { "matches": ["http://*/*", "https://*/*"], "js": ["content.js"], "run_at": "document_idle" }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Chrome Diet",
+    "default_icon": { "16": "icon16.png", "48": "icon48.png", "128": "icon128.png" }
+  },
+  "icons": { "16": "icon16.png", "48": "icon48.png", "128": "icon128.png" },
+  "minimum_chrome_version": "121"
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <h1>Chrome Diet</h1>
+    <label class="switch" title="Aktifkan / matikan otomatis"><input type="checkbox" id="enabled"><span></span></label>
+  </header>
+
+  <nav>
+    <button data-panel="home" class="on">Ringkasan</button>
+    <button data-panel="tabs">Tab</button>
+    <button data-panel="settings">Pengaturan</button>
+  </nav>
+  <p id="msg" aria-live="polite"></p>
+
+  <section id="home" class="panel">
+    <div class="mem">
+      <div class="memtop"><b id="memText">–</b><span id="memPct"></span></div>
+      <div class="bar"><i id="memBar"></i></div>
+      <canvas id="live"></canvas>
+      <small>RAM komputer, 60 detik terakhir (live)</small>
+      <canvas id="hist"></canvas>
+      <small>2 jam terakhir (1 titik per menit)</small>
+      <p class="note">Ini RAM seluruh komputer. Chrome tidak mengizinkan extension membaca memori per tab atau proses.</p>
+    </div>
+    <div class="stats">
+      <div><b id="open">–</b><small>tab aktif</small></div>
+      <div><b id="sleeping">–</b><small>tab tidur</small></div>
+      <div><b id="saved">–</b><small>≈ RAM dihemat</small></div>
+    </div>
+    <button id="sweep" class="primary">Tidurkan tab sekarang</button>
+    <button id="focus" class="wide">Fokus: tidurkan semua kecuali tab ini</button>
+    <p id="policy" class="note"></p>
+  </section>
+
+  <section id="tabs" class="panel" hidden>
+    <h2>Paling boros</h2>
+    <p class="note">Perkiraan JS heap per tab. Belum termasuk gambar, GPU, dan proses lain, jadi hanya patokan kasar.</p>
+    <div id="heavy" class="list"></div>
+
+    <h2>Tab tidur <span id="sleepCount"></span></h2>
+    <div id="sleepList" class="list"></div>
+
+    <h2>Tab duplikat</h2>
+    <div id="dupBox" class="list"></div>
+  </section>
+
+  <section id="settings" class="panel" hidden>
+    <label class="line">Tidurkan tab setelah
+      <select id="minutes">
+        <option value="5">5 menit</option><option value="10">10 menit</option>
+        <option value="15">15 menit</option><option value="30">30 menit</option>
+        <option value="60">1 jam</option>
+      </select>
+    </label>
+    <label class="check"><input type="checkbox" id="skipPinned"> Jangan tidurkan tab pin</label>
+    <label class="check"><input type="checkbox" id="skipAudible"> Jangan tidurkan tab yang bunyi</label>
+
+    <h2>Mode hemat baterai</h2>
+    <label class="check"><input type="checkbox" id="batteryMode"> Lebih agresif saat tidak dicas</label>
+    <label class="line">Tidur setelah
+      <select id="batteryMinutes">
+        <option value="1">1 menit</option><option value="2">2 menit</option><option value="3">3 menit</option>
+        <option value="5">5 menit</option><option value="10">10 menit</option>
+      </select>
+    </label>
+
+    <h2>Jadwal</h2>
+    <label class="check"><input type="checkbox" id="scEnabled"> Aktifkan jadwal</label>
+    <div class="line"><span>Dari</span><input type="time" id="scFrom"><span>sampai</span><input type="time" id="scTo"></div>
+    <label class="line">Saat jadwal berlaku
+      <select id="scMode">
+        <option value="pause">Jeda otomatis</option>
+        <option value="aggressive">Lebih agresif</option>
+      </select>
+    </label>
+    <label class="line" id="scMinutesRow">Tidur setelah
+      <select id="scMinutes">
+        <option value="1">1 menit</option><option value="2">2 menit</option><option value="5">5 menit</option>
+        <option value="10">10 menit</option>
+      </select>
+    </label>
+
+    <h2>Whitelist situs</h2>
+    <textarea id="whitelist" rows="3" spellcheck="false" placeholder="satu domain per baris"></textarea>
+    <button id="addSite">Tambah situs ini</button>
+
+    <h2>Whitelist grup tab</h2>
+    <textarea id="whitelistGroups" rows="2" spellcheck="false" placeholder="nama grup, satu per baris"></textarea>
+    <button id="addGroup">Tambah grup tab ini</button>
+
+    <h2>Cadangan pengaturan</h2>
+    <textarea id="backup" rows="3" spellcheck="false" placeholder="Ekspor mengisi kotak ini. Untuk impor, tempel JSON di sini."></textarea>
+    <div class="two"><button id="export">Ekspor</button><button id="import">Impor</button></div>
+  </section>
+
+  <footer id="total"></footer>
+  <script src="shared.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
